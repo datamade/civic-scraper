@@ -5,7 +5,7 @@ from civic_scraper.platforms import GranicusSite, GranicusJSONSite
 logging.basicConfig(level="DEBUG")
 
 granicus_rss_sites = [
-    {'site': 'https://lacounty.granicus.com/ViewPublisherRSS.php?view_id=1&mode=agendas',
+    {'site': 'https://brookhavencityga.iqm2.com/Services/RSS.aspx?Feed=Calendar',
      'config': {
         'place': 'brookhaven',
         'state_or_province': 'ga',
@@ -26,18 +26,18 @@ granicus_rss_sites = [
 ]
 
 granicus_json_sites = [
-    # {'site': 'https://lacounty.granicus.com/services/archives/',
-    #     'config': {
-    #     'place': 'los_angeles',
-    #     'state_or_province': 'ca',
-    #     'start_date': '04/07/2019',
-    #     'end_date': '06/12/2019'
-    #     }
-    # },
+    {'site': 'https://lacounty.granicus.com/services/archives/',
+        'config': {
+        'place': 'los_angeles',
+        'state_or_province': 'ca',
+        'start_date': '04/07/2019',
+        'end_date': '06/12/2019'
+        }
+    },
     {'site': 'https://lausd.granicus.com/services/archives/',
         'config': {
-        'place': 'brookhaven',
-        'state_or_province': 'ga',
+        'place': 'los_angeles',
+        'state_or_province': 'ca',
         'start_date': '04/07/2019',
         'end_date': '06/12/2019'
         }
@@ -45,10 +45,10 @@ granicus_json_sites = [
 ]
 
 def granicus_integration():
-    # for obj in granicus_rss_sites:
-    #     scraper = GranicusSite(obj['site'], **obj['config'])
-    #     data = scraper.scrape()
-    #     assert len(data) > 0
+    for obj in granicus_rss_sites:
+        scraper = GranicusSite(obj['site'], **obj['config'])
+        data = scraper.scrape()
+        assert len(data) > 0
 
     for obj in granicus_json_sites:
         scraper = GranicusJSONSite(obj['site'], **obj['config'])

@@ -109,22 +109,24 @@ class GranicusJSONSite(base.Site):
             }
         return Asset(**e)
 
-    def getMeetingDateObj(self, meeting):
+    def _getMeetingDateObj(self, meeting):
         return datetime.strptime(meeting['date'], '%Y-%m-%d')
 
-    def getAgendaUrl(self, clip_id):
+    def _getAgendaUrl(self, clip_id):
         return f'https://{self.subdomain}.granicus.com/AgendaViewer.php?view_id=1&clip_id={clip_id}'
 
     def scrape(self):
         session = Session()
         session.headers.update({"User-Agent": "Mozilla/5.0 (X11; CrOS x86_64 12871.102.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.141 Safari/537.36"})
 
-        # we can't assume the response will be in 100% chronological order
         response = session.get(self.url)
-        meetings = map(lambda m: dict(**m,**{'dateObj': self.getMeetingDateObj(m)}), response.json())
+        # add a date object to each meeting
+        meetings = map(lambda m: dict(**m,**{'dateObj': self._getMeetingDateObj(m)}), response.json())
 
         seen = set() # e.g. spanish captioned meetings have same agenda
         agendas = AssetCollection()
+
+        # we can't assume the response will be in 100% chronological order
         for meeting in sorted(meetings,reverse=True,key=lambda m: m['dateObj']):
             if meeting['dateObj'] > self.end_date:
                 continue
@@ -146,7 +148,7 @@ class GranicusJSONSite(base.Site):
                 continue
 
             # if page redirects, there should be a pdf on the other side
-            agenda_url = self.getAgendaUrl(meeting['id'])
+            agenda_url = self._getAgendaUrl(meeting['id'])
             agenda_resp = session.get(agenda_url)
             if agenda_url != agenda_resp.url:
                 agendas.append(self.create_asset(meeting, agenda_url))
