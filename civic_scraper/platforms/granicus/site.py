@@ -73,7 +73,7 @@ class GranicusSite(base.Site):
 
 
 class GranicusJSONSite(base.Site):
-    def __init__(self, url, place=None, state_or_province=None, start_date=None, end_date=None, cache=Cache()):
+    def __init__(self, url, place=None, state_or_province=None, start_date=None, end_date=None, view_id=None, cache=Cache()):
         self.url = url
         self.subdomain = urlparse(url).netloc.split('.')[0]
         self.place = place
@@ -82,6 +82,7 @@ class GranicusJSONSite(base.Site):
 
         self.start_date = datetime.strptime(start_date, '%m/%d/%Y')
         self.end_date = datetime.strptime(end_date, '%m/%d/%Y')
+        self.view_id = view_id
 
     def _get_meeting_id(self, object_id):
 
@@ -113,7 +114,7 @@ class GranicusJSONSite(base.Site):
         return datetime.strptime(meeting['date'], '%Y-%m-%d')
 
     def _getAgendaUrl(self, clip_id):
-        return f'https://{self.subdomain}.granicus.com/AgendaViewer.php?view_id=1&clip_id={clip_id}'
+        return f'https://{self.subdomain}.granicus.com/AgendaViewer.php?view_id={self.view_id}&clip_id={clip_id}'
 
     def scrape(self):
         session = Session()
@@ -156,6 +157,6 @@ class GranicusJSONSite(base.Site):
 
             sleep(1)
 
-        print(list(map(lambda e: e.meeting_date,agendas)))
+        print(list(map(lambda e: e.url,agendas)))
 
         return agendas

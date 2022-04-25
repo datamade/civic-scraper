@@ -31,7 +31,8 @@ granicus_json_sites = [
         'place': 'los_angeles',
         'state_or_province': 'ca',
         'start_date': '04/07/2019',
-        'end_date': '06/12/2019'
+        'end_date': '06/12/2019',
+        'view_id': 2
         }
     },
     {'site': 'https://lausd.granicus.com/services/archives/',
@@ -39,16 +40,17 @@ granicus_json_sites = [
         'place': 'los_angeles',
         'state_or_province': 'ca',
         'start_date': '04/07/2019',
-        'end_date': '06/12/2019'
+        'end_date': '06/12/2019',
+        'view_id': 1
         }
     },
 ]
 
 def granicus_integration():
-    for obj in granicus_rss_sites:
-        scraper = GranicusSite(obj['site'], **obj['config'])
-        data = scraper.scrape()
-        assert len(data) > 0
+    # for obj in granicus_rss_sites:
+    #     scraper = GranicusSite(obj['site'], **obj['config'])
+    #     data = scraper.scrape()
+    #     assert len(data) > 0
 
     for obj in granicus_json_sites:
         scraper = GranicusJSONSite(obj['site'], **obj['config'])
