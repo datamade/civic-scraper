@@ -131,7 +131,7 @@ class GranicusJSONSite(base.Site):
         for meeting in sorted(meetings,reverse=True,key=lambda m: m['dateObj']):
             if meeting['dateObj'] > self.end_date:
                 continue
-            elif meeting['dateObj'] <= self.start_date:
+            elif meeting['dateObj'] < self.start_date:
                 break
 
             # some instances have test meetings with no url or upload name
