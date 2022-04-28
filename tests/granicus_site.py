@@ -1,6 +1,7 @@
 import pytest
 import logging
 from civic_scraper.platforms import GranicusSite, GranicusJSONSite
+from committee_name_parsers import la_county_committee_parser, la_usd_comittee_parser
 
 logging.basicConfig(level="DEBUG")
 
@@ -30,27 +31,29 @@ granicus_json_sites = [
         'config': {
         'place': 'los_angeles',
         'state_or_province': 'ca',
-        'start_date': '04/07/2019',
-        'end_date': '06/12/2019',
-        'view_id': 2
+        'start_date': '01/01/2022',
+        'end_date': '12/31/2022',
+        'view_id': 2,
+        'committee_name_parser': la_county_committee_parser
         }
     },
     {'site': 'https://lausd.granicus.com/services/archives/',
         'config': {
         'place': 'los_angeles',
         'state_or_province': 'ca',
-        'start_date': '04/07/2019',
-        'end_date': '06/12/2019',
-        'view_id': 1
+        'start_date': '01/01/2022',
+        'end_date': '12/31/2022',
+        'view_id': 1,
+        'committee_name_parser': la_usd_comittee_parser
         }
     },
 ]
 
 def granicus_integration():
-    # for obj in granicus_rss_sites:
-    #     scraper = GranicusSite(obj['site'], **obj['config'])
-    #     data = scraper.scrape()
-    #     assert len(data) > 0
+    for obj in granicus_rss_sites:
+        scraper = GranicusSite(obj['site'], **obj['config'])
+        data = scraper.scrape()
+        assert len(data) > 0
 
     for obj in granicus_json_sites:
         scraper = GranicusJSONSite(obj['site'], **obj['config'])

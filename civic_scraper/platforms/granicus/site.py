@@ -73,12 +73,13 @@ class GranicusSite(base.Site):
 
 
 class GranicusJSONSite(base.Site):
-    def __init__(self, url, place=None, state_or_province=None, start_date=None, end_date=None, view_id=None, cache=Cache()):
+    def __init__(self, url, committee_name_parser=None, place=None, state_or_province=None, start_date=None, end_date=None, view_id=None, cache=Cache()):
         self.url = url
         self.subdomain = urlparse(url).netloc.split('.')[0]
         self.place = place
         self.state_or_province = state_or_province
         self.cache = cache
+        self.committee_name_parser = committee_name_parser
 
         self.start_date = datetime.strptime(start_date, '%m/%d/%Y')
         self.end_date = datetime.strptime(end_date, '%m/%d/%Y')
@@ -97,7 +98,7 @@ class GranicusJSONSite(base.Site):
 
         e = {'url': url,
              'asset_name': asset_name,
-             'committee_name': '',
+             'committee_name': self.committee_name_parser(asset_name),
              'place': self.place,
              'state_or_province': self.state_or_province,
              'asset_type': 'Agenda',
@@ -156,7 +157,5 @@ class GranicusJSONSite(base.Site):
                 seen.add(meeting['agendauploadname'])
 
             sleep(1)
-
-        print(list(map(lambda e: e.url,agendas)))
 
         return agendas
