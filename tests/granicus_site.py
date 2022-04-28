@@ -1,7 +1,7 @@
 import pytest
 import logging
 from civic_scraper.platforms import GranicusSite, GranicusJSONSite
-from committee_name_parsers import la_county_committee_parser, la_usd_comittee_parser
+from committee_name_parsers import la_county_committee_parser, la_usd_committee_parser
 
 logging.basicConfig(level="DEBUG")
 
@@ -44,7 +44,7 @@ granicus_json_sites = [
         'start_date': '01/01/2022',
         'end_date': '12/31/2022',
         'view_id': 1,
-        'committee_name_parser': la_usd_comittee_parser
+        'committee_name_parser': la_usd_committee_parser
         }
     },
 ]

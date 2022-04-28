@@ -8,7 +8,7 @@ def la_county_committee_parser(name):
     else:
         return name.strip(', ')
 
-def la_usd_comittee_parser(name):
+def la_usd_committee_parser(name):
     print(name)
     board_strings = ('Board', 'Regular', 'Special')
     bos_meeting = any(s in name for s in board_strings)
